@@ -44,10 +44,10 @@ class Computation(var expression: String, var variableSpace: Map[String, Int]) e
           this.eval
 
     private def signEval(expression: List[String]): List[String] =
-        val answer: List[String] = for element: String <- expression
+        val answer: List[String] = for {element: String <- expression}
             yield element match
-                case x if x.matches("^(\\+|-)+$") =>
-                    val sign = x.toList.map(letter => s"$letter".toInt).product
+                case x if x.matches("^(\\+|-)+$") && x.length > 1 =>
+                    val sign = x.toList.map(letter => s"${letter}1".toInt).product
                     if (sign > 0) "+" else "-"
 
                 case _ => element
