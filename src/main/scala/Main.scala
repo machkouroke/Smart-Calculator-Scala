@@ -1,3 +1,4 @@
+import exceptions.{SyntaxException, UndefinedException}
 import sun.tools.jstat.Expression
 import utilities.{Affectation, Command, Computation}
 
@@ -42,7 +43,9 @@ object Main {
 
 
         catch
-            case ex: Exception =>
+            case ex: SyntaxException =>
+                ex.getMessage
+            case ex: UndefinedException =>
                 ex.getMessage
 
 

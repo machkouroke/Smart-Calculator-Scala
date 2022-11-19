@@ -1,5 +1,7 @@
 package utilities
 
+import exceptions.SyntaxException
+
 class Affectation(var expression: String, var variableSpace: Map[String, Int]) extends Operation {
     private var variableName: String = ""
     private var variableValue: Int = 0
@@ -18,9 +20,9 @@ class Affectation(var expression: String, var variableSpace: Map[String, Int]) e
     def checker(): Unit =
         val operand = this.expression.split("=", 2)
         if (!operand.head.trim.matches(s"^$VALID_IDENTIFIER$$"))
-            throw new Exception(INVALID_IDENTIFIER)
+            throw new SyntaxException(INVALID_IDENTIFIER)
         else if (!operand.last.trim.matches(s"^$VALID_OPERATION$$"))
-            throw new Exception(INVALID_ASSIGNMENT)
+            throw new SyntaxException(INVALID_ASSIGNMENT)
         else if (!this.expression.matches(s"^$VALID_IDENTIFIER[\\s]*=[\\s]*$VALID_OPERATION$$"))
-            throw new Exception(INVALID_EXPRESSION)
+            throw new SyntaxException(INVALID_EXPRESSION)
 }

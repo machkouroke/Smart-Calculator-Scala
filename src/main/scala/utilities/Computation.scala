@@ -1,5 +1,7 @@
 package utilities
 
+import exceptions.{SyntaxException, UndefinedException}
+
 class Computation(var expression: String, var variableSpace: Map[String, Int]) extends Operation {
     var operand: List[String] = Nil
 
@@ -56,7 +58,7 @@ class Computation(var expression: String, var variableSpace: Map[String, Int]) e
         try
             expression.map(x => if (x.matches(VALID_IDENTIFIER.toString())) this.variableSpace(x.trim).toString else x)
         catch
-            case _: NoSuchElementException => throw new Exception("Unknown variable")
+            case _: NoSuchElementException => throw new UndefinedException("Unknown variable")
 
 
     def eval(postfixExpression: List[String]): Int =
@@ -144,18 +146,18 @@ class Computation(var expression: String, var variableSpace: Map[String, Int]) e
 
     def checker(): Unit =
         if (!this.expression.matches(s"^$VALID_OPERATION$$"))
-            throw new Exception(INVALID_EXPRESSION)
+            throw new SyntaxException(INVALID_EXPRESSION)
         var stackBracket: List[String] = List()
         for (ch <- this.expression)
             ch.toString match
                 case x: String if x == "(" => stackBracket :+= x
                 case x: String if x == ")" =>
                     if (stackBracket.isEmpty)
-                        throw new Exception(INVALID_EXPRESSION)
+                        throw new SyntaxException(INVALID_EXPRESSION)
 
                     stackBracket = stackBracket.init
 
                 case _: String =>
 
-        if (stackBracket.nonEmpty) throw new Exception(INVALID_EXPRESSION)
+        if (stackBracket.nonEmpty) throw new SyntaxException(INVALID_EXPRESSION)
 }
